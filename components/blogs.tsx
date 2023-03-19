@@ -1,11 +1,17 @@
 import { useEffect, useState } from "react";
 
+import axios from "axios";
+
 const BASE_URL = process.env.NEXT_PUBLIC_STRAPI_URL;
 
 import "../styles/blog.module.css";
 
 export default function Blog() {
   const [blogs, setBlogs] = useState([]);
+
+  const api = axios.create({
+    baseURL: BASE_URL + "/api",
+  });
 
   useEffect(() => {
     const url = BASE_URL + "/api/blogs";
@@ -17,12 +23,19 @@ export default function Blog() {
       const data = rawData["data"];
 
       setBlogs(data);
+
+      const me = await api.get("/users/me", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      console.log(JSON.stringify(me.data, null, 2));
     }
 
     fetchBlogs();
   }, []);
 
-  console.log(blogs);
+  console.log(JSON.stringify(blogs, null, 2));
 
   return (
     <>
