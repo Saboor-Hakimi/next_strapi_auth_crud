@@ -1,18 +1,19 @@
-import Footer from '../components/footer';
-import Header from '../components/header';
-import Drawer from '@/components/drawer';
+import Footer from "../components/footer";
+import Header from "../components/header";
+import Drawer from "@/components/drawer";
+import Blog from "@/components/blogs";
 
-import Login from '@/components/login';
-import { useEffect } from 'react';
+import Login from "@/components/login";
+import { useEffect } from "react";
 
-import axios from 'axios';
+import axios from "axios";
 
 export default function Home() {
   useEffect(() => {
     // check if the user is logged in by trying to access the /users/me endpoint, if not redirect to login page
 
-    const token = localStorage.getItem('token');
-    const url = process.env.NEXT_PUBLIC_STRAPI_URL + '/api/users/me';
+    const token = localStorage.getItem("token");
+    const url = process.env.NEXT_PUBLIC_STRAPI_URL + "/api/users/me";
 
     axios
       .get(url, {
@@ -22,15 +23,15 @@ export default function Home() {
       })
       .then((res) => {
         if (res.status === 200) {
-          console.log('user is authenticated');
+          console.log("user is authenticated");
         } else {
-          console.log('user is not authenticated');
-          window.location.href = '/login';
+          console.log("user is not authenticated");
+          window.location.href = "/login";
         }
       })
       .catch((err) => {
         console.log(err);
-        window.location.href = '/login';
+        window.location.href = "/login";
       });
   });
 
@@ -38,7 +39,11 @@ export default function Home() {
     <>
       {/* <Drawer /> */}
       <Header />
-      <main></main>
+      <main className="mt-[10%] flex justify-center">
+        <div className="block">
+          <Blog />
+        </div>
+      </main>
       {/* <Footer /> */}
     </>
   );
